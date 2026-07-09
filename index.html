@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rishav — Product & Logistics</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root{
+    --ink:#101E30;
+    --paper:#F3F5F7;
+    --paper-2:#EAEDF1;
+    --orange:#E86A33;
+    --slate:#5C6B7D;
+    --line:#D8DEE5;
+    --white:#FFFFFF;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.03em;
+  }
+
+  h1,h2,h3{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+  }
+
+  a{color:inherit;}
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(243,245,247,0.88);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:16px;
+    padding-bottom:16px;
+  }
+  .brand{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+  }
+  .brand span{color:var(--orange);}
+  .navlinks{
+    display:flex;
+    gap:26px;
+    font-size:0.82rem;
+  }
+  .navlinks a{
+    text-decoration:none;
+    color:var(--slate);
+    font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-size:0.72rem;
+    transition:color 0.2s;
+    cursor:pointer;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--orange);}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:76px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .waybill-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--slate);
+    border:1px solid var(--line);
+    padding:6px 12px;
+    border-radius:2px;
+    background:var(--white);
+    margin-bottom:28px;
+  }
+  .waybill-tag .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--orange);
+    display:inline-block;
+  }
+  .hero h1{
+    font-size:clamp(2.2rem, 5vw, 3.6rem);
+    font-weight:700;
+    line-height:1.05;
+    max-width:11ch;
+    margin-bottom:20px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--orange);
+  }
+  .hero p.lede{
+    max-width:52ch;
+    font-size:1.05rem;
+    color:var(--slate);
+    margin-bottom:34px;
+  }
+  .hero-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:12px 20px;
+    border-radius:2px;
+    text-decoration:none;
+    display:inline-block;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary{
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .btn-primary:hover{background:var(--orange);}
+  .btn-outline{
+    border:1px solid var(--ink);
+    color:var(--ink);
+  }
+  .btn-outline:hover{background:var(--ink);color:var(--paper);}
+
+  /* ---------- TRACKING TIMELINE ---------- */
+  .tracking{
+    padding:46px 0 56px;
+    border-bottom:1px solid var(--line);
+  }
+  .tracking-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--slate);
+    margin-bottom:22px;
+  }
+  .route{
+    position:relative;
+    display:flex;
+    justify-content:space-between;
+    padding-top:8px;
+  }
+  .route::before{
+    content:"";
+    position:absolute;
+    top:15px;
+    left:0;
+    right:0;
+    height:2px;
+    background-image:linear-gradient(to right, var(--line) 60%, transparent 0%);
+    background-size:10px 2px;
+    background-repeat:repeat-x;
+  }
+  .stop{
+    position:relative;
+    flex:1;
+    text-align:center;
+    padding:0 6px;
+  }
+  .stop .node{
+    width:14px;height:14px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--slate);
+    margin:0 auto 12px;
+    position:relative;
+    z-index:2;
+  }
+  .stop.completed .node{
+    border-color:#1E7A45;
+    background:#1E7A45;
+  }
+  .stop.completed .stop-label{color:var(--ink);font-weight:500;}
+  .stop.active .node{
+    border-color:var(--orange);
+    background:var(--orange);
+    box-shadow:0 0 0 4px rgba(232,106,51,0.15);
+  }
+  .stop .stop-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    line-height:1.4;
+  }
+  .stop.active .stop-label{color:var(--ink);font-weight:600;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:38px;
+  }
+  .sec-num{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--orange);
+    font-size:0.85rem;
+  }
+  .sec-head h2{
+    font-size:1.6rem;
+    font-weight:700;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:48px;
+  }
+  .about-grid p{color:var(--slate);margin-bottom:16px;max-width:56ch;}
+  .fact-sheet{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:22px;
+  }
+  .fact-sheet .fs-title{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--slate);
+    border-bottom:1px dashed var(--line);
+    padding-bottom:10px;
+    margin-bottom:14px;
+  }
+  .fact-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.86rem;
+    padding:7px 0;
+    border-bottom:1px solid var(--paper-2);
+    gap:12px;
+  }
+  .fact-row:last-child{border-bottom:none;}
+  .fact-row .k{color:var(--slate);}
+  .fact-row .v{text-align:right;font-weight:500;}
+
+  /* ---------- MANIFEST CARDS (case studies) ---------- */
+  .manifest{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:3px;
+    margin-bottom:22px;
+    overflow:hidden;
+  }
+  .manifest-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 22px;
+    border-bottom:1px solid var(--line);
+    background:var(--paper-2);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .manifest-id{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:var(--slate);
+    letter-spacing:0.04em;
+  }
+  .status{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.66rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:4px 10px;
+    border-radius:20px;
+  }
+  .status.delivered{background:#DFF3E6;color:#1E7A45;}
+  .status.transit{background:#FCE8DA;color:var(--orange);}
+
+  .manifest-body{padding:26px 22px 24px;}
+  .manifest-body h3{font-size:1.28rem;margin-bottom:6px;}
+  .manifest-body .tagline{color:var(--slate);font-size:0.92rem;margin-bottom:18px;}
+
+  .m-cols{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:16px;
+  }
+  .m-col .m-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.64rem;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    color:var(--orange);
+    margin-bottom:8px;
+  }
+  .m-col p{font-size:0.88rem;color:var(--ink);}
+
+  .insight-box{
+    background:var(--paper);
+    border-left:3px solid var(--orange);
+    padding:12px 16px;
+    font-size:0.86rem;
+    color:var(--slate);
+    border-radius:0 3px 3px 0;
+  }
+  .insight-box strong{color:var(--ink);}
+
+  .manifest-links{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+  .m-link{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    text-decoration:none;
+    padding:9px 16px;
+    border-radius:2px;
+    border:1px solid var(--ink);
+    color:var(--ink);
+    transition:background 0.15s, color 0.15s;
+  }
+  .m-link:hover{background:var(--ink);color:var(--paper);}
+  .m-link.primary{
+    background:var(--orange);
+    border-color:var(--orange);
+    color:var(--white);
+  }
+  .m-link.primary:hover{background:var(--ink);border-color:var(--ink);}
+
+  /* ---------- SKILLS ---------- */
+  .skill-groups{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .skill-group{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:20px;
+  }
+  .skill-group h4{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--orange);
+    margin-bottom:14px;
+  }
+  .skill-group ul{list-style:none;}
+  .skill-group li{
+    font-size:0.86rem;
+    padding:6px 0;
+    border-bottom:1px solid var(--paper-2);
+    color:var(--slate);
+  }
+  .skill-group li:last-child{border-bottom:none;}
+  .skill-group li b{color:var(--ink);font-weight:600;}
+
+  /* ---------- CONTACT ---------- */
+  footer{
+    padding:64px 0 48px;
+  }
+  .contact-band{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:4px;
+    padding:40px 34px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .contact-band h2{
+    color:var(--white);
+    font-size:1.5rem;
+    max-width:16ch;
+  }
+  .contact-links{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .contact-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    text-decoration:none;
+    padding:11px 18px;
+    border:1px solid rgba(243,245,247,0.35);
+    border-radius:2px;
+    transition:background 0.15s, border-color 0.15s;
+  }
+  .contact-links a:hover{background:var(--orange);border-color:var(--orange);}
+  .foot-note{
+    text-align:center;
+    margin-top:30px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:var(--slate);
+    letter-spacing:0.04em;
+  }
+
+  @media (max-width:720px){
+    .about-grid{grid-template-columns:1fr;}
+    .m-cols{grid-template-columns:1fr;}
+    .skill-groups{grid-template-columns:1fr;}
+    .route{flex-wrap:wrap;row-gap:20px;}
+    .route::before{display:none;}
+    .stop{flex:0 0 33%;}
+    .contact-band{flex-direction:column;align-items:flex-start;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+
+  [data-reveal]{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  [data-reveal].in{
+    opacity:1;
+    transform:translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">RISHAV ANAND<span>.</span></div>
+    <div class="navlinks">
+      <a data-scroll="work" tabindex="0" role="button">Work</a>
+      <a data-scroll="about" tabindex="0" role="button">About</a>
+      <a data-scroll="skills" tabindex="0" role="button">Toolkit</a>
+      <a data-scroll="contact" tabindex="0" role="button">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="waybill-tag"><span class="dot"></span> STATUS: IN TRANSIT — B.VOC RETAIL & LOGISTICS, SEM 3</div>
+    <h1>Product thinking, <em>built like logistics.</em></h1>
+    <p class="lede">I'm Rishav — a Retail & Logistics Management student at BHU, currently building product sense through Product Matters 6.0 (IIT Guwahati E-Cell). This is a record of what I've shipped so far, not a promise of what I might do someday.</p>
+    <div class="hero-actions">
+      <a data-scroll="work" tabindex="0" role="button" class="btn btn-primary">See the case files</a>
+      <a data-scroll="contact" tabindex="0" role="button" class="btn btn-outline">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<div class="tracking">
+  <div class="wrap">
+    <div class="tracking-label">// Semester history</div>
+    <div class="route">
+      <div class="stop completed">
+        <div class="node"></div>
+        <div class="stop-label">Sem 1<br>Foundations —<br>Retail, Logistics, Accounting</div>
+      </div>
+      <div class="stop completed">
+        <div class="node"></div>
+        <div class="stop-label">Sem 2<br>Business Dev. +<br>Content Writing Internships</div>
+      </div>
+      <div class="stop active">
+        <div class="node"></div>
+        <div class="stop-label">Sem 3<br>PM Bootcamp<br>IIT Guwahati E-Cell</div>
+      </div>
+      <div class="stop">
+        <div class="node"></div>
+        <div class="stop-label">Sem 4<br>Upcoming</div>
+      </div>
+      <div class="stop">
+        <div class="node"></div>
+        <div class="stop-label">Sem 5<br>Upcoming</div>
+      </div>
+      <div class="stop">
+        <div class="node"></div>
+        <div class="stop-label">Sem 6<br>Upcoming</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num mono">01</span>
+      <h2>Case files</h2>
+    </div>
+
+    <!-- TrustFix -->
+    <div class="manifest" data-reveal>
+      <div class="manifest-head">
+        <span class="manifest-id mono">MANIFEST / TF-002 / WEEK 2–3</span>
+        <span class="status delivered">Delivered</span>
+      </div>
+      <div class="manifest-body">
+        <h3>TrustFix</h3>
+        <p class="tagline">A two-sided home services marketplace — verified professionals, fixed upfront pricing, and a guided step-by-step booking flow.</p>
+        <div class="m-cols">
+          <div class="m-col">
+            <div class="m-label">Problem</div>
+            <p>Booking home services (plumbers, electricians, cleaners) is unpredictable — no verified credentials, no upfront pricing, and no reliable way to know who's actually showing up.</p>
+          </div>
+          <div class="m-col">
+            <div class="m-label">Process</div>
+            <p>Designed the MVP around verification, fixed pricing, ratings, and in-app payments, then converted the wireframes into a fully clickable HTML/JS prototype covering both the customer booking flow and the professional's job-acceptance flow.</p>
+          </div>
+          <div class="m-col">
+            <div class="m-label">Outcome</div>
+            <p>Shipped a working prototype, hosted live on Netlify, plus a slide deck walking through the design decisions.</p>
+          </div>
+        </div>
+        <div class="insight-box">
+          <strong>What building (not just designing) taught me:</strong> while wiring up the prototype I hit a request-timeout edge case that never showed up in the static wireframes — a reminder that a design only reveals its real gaps once it's actually interactive.
+        </div>
+        <div class="manifest-links">
+          <a href="https://effortless-bubblegum-c31ed2.netlify.app/" target="_blank" rel="noopener" class="m-link primary">View Prototype ↗</a>
+          <a href="https://drive.google.com/file/d/1M8UqBBA29ESbsMBCx2p2wfwrKC2fNJ3o/view?usp=sharing" target="_blank" rel="noopener" class="m-link">View Deck ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TrustHire -->
+    <div class="manifest" data-reveal>
+      <div class="manifest-head">
+        <span class="manifest-id mono">MANIFEST / TH-001 / WEEK 1</span>
+        <span class="status delivered">Delivered</span>
+      </div>
+      <div class="manifest-body">
+        <h3>TrustHire</h3>
+        <p class="tagline">A product teardown of LinkedIn's job listings, and a concept for verified postings.</p>
+        <div class="m-cols">
+          <div class="m-col">
+            <div class="m-label">Problem</div>
+            <p>LinkedIn's job listings have no reliable verification layer — fake or stale postings erode trust in the platform's core job-search function.</p>
+          </div>
+          <div class="m-col">
+            <div class="m-label">Process</div>
+            <p>Broke down LinkedIn's existing job-posting flow to isolate exactly where trust breaks down, then proposed TrustHire — a verification layer for listings.</p>
+          </div>
+          <div class="m-col">
+            <div class="m-label">Outcome</div>
+            <p>A structured teardown and concept proposal — my first full product exercise in Product Matters 6.0.</p>
+          </div>
+        </div>
+        <div class="manifest-links">
+          <a href="https://drive.google.com/file/d/1uWnNXwPXnGs-yzdtuD3x6ZPrBJ5OeOFD/view?usp=drive_link" target="_blank" rel="noopener" class="m-link primary">View Deck ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart with Context -->
+    <div class="manifest" data-reveal>
+      <div class="manifest-head">
+        <span class="manifest-id mono">MANIFEST / CC-003 / JTBD STUDY</span>
+        <span class="status delivered">Delivered</span>
+      </div>
+      <div class="manifest-body">
+        <h3>Cart with Context</h3>
+        <p class="tagline">A Jobs-to-be-Done study on why people really use Amazon's shopping cart.</p>
+        <div class="m-cols">
+          <div class="m-col">
+            <div class="m-label">Problem</div>
+            <p>Philonet founder Rahul Mattihalli set a JTBD learning exercise during a Product Matters session: pick a product you use daily, find a real frustration with it, and validate the underlying "job" with actual people before building anything.</p>
+          </div>
+          <div class="m-col">
+            <div class="m-label">Process</div>
+            <p>Chose Amazon's shopping cart as the product and hypothesized that people repurpose it as a long-term decision space rather than a pure checkout step, then validated that hypothesis with a survey.</p>
+          </div>
+          <div class="m-col">
+            <div class="m-label">Outcome</div>
+            <p>Proposed an MVP concept, "Cart with Context," and packaged the findings into a slide deck.</p>
+          </div>
+        </div>
+        <div class="manifest-links">
+          <a href="https://drive.google.com/file/d/1UJOLjVsGFzN-01WmEyDkgd9Mn_06ui2z/view?usp=drive_link" target="_blank" rel="noopener" class="m-link primary">View Deck ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num mono">02</span>
+      <h2>About</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>I'm a management student at Banaras Hindu University, pursuing a B.Voc in Retail and Logistics Management. Alongside my degree, I'm part of Product Matters 6.0, a hands-on product management bootcamp run by IIT Guwahati's E-Cell — this is where the case files on this page come from.</p>
+        <p>My interests sit at the intersection of retail, logistics, supply chain, and product management.</p>
+        <p>I'm early in this — this page is a snapshot of work in progress, not a finished resume.</p>
+      </div>
+      <div class="fact-sheet">
+        <div class="fs-title">// Quick facts</div>
+        <div class="fact-row"><span class="k">Based at</span><span class="v">BHU RGSC, Barkachha, Mirzapur</span></div>
+        <div class="fact-row"><span class="k">Program</span><span class="v">B.Voc Retail & Logistics</span></div>
+        <div class="fact-row"><span class="k">Currently</span><span class="v">Product Matters 6.0</span></div>
+        <div class="fact-row"><span class="k">Focus areas</span><span class="v">Retail, Logistics, Supply Chain, PM</span></div>
+        <div class="fact-row"><span class="k">Looking for</span><span class="v">Retail, Logistics & PM Internships</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num mono">03</span>
+      <h2>Toolkit</h2>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-group">
+        <h4>Product</h4>
+        <ul>
+          <li>Product teardowns</li>
+          <li>Jobs-to-be-Done (JTBD)</li>
+          <li><b>Learning:</b> Figma wireframing</li>
+          <li>MVP scoping</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>Domain</h4>
+        <ul>
+          <li>Retail & logistics management</li>
+          <li>Warehouse management</li>
+          <li>Visual merchandising</li>
+          <li>Supply chain fundamentals</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>Building</h4>
+        <ul>
+          <li>Clickable HTML/JS prototyping</li>
+          <li>Survey-based validation</li>
+          <li>Case study writing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-band">
+      <h2>Open to retail, logistics & PM internship conversations.</h2>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/rishavanand521" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rishavanad/indifferent-portfolio" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:rishavanand521@gmail.com">Email</a>
+      </div>
+    </div>
+    <div class="foot-note">BUILT BY RISHAV — LAST UPDATED JULY 2026</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-scroll]').forEach(link=>{
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      const target = document.getElementById(this.getAttribute('data-scroll'));
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+    link.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        const target = document.getElementById(this.getAttribute('data-scroll'));
+        if(target){
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }
+    });
+  });
+
+  const reveals = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  reveals.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
